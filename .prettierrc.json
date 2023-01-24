@@ -1,4 +1,6 @@
 {
   "semi": true,
-  "traillingcomma": true
+  "singleQuote": true,
+  "traillingComma": true,
+  "bracketSpacing": true
 }
