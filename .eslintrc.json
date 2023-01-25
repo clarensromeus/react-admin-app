@@ -19,6 +19,8 @@
       { "extensions": [".js", ".jsx", ".ts", ".tsx"] }
     ],
     "no-unused-vars": "warn",
+    "react/jsx-fragment": ["off"],
+    "import/no-duplicates": ["off", { "considerQueryString": false }],
     "import/no-unresolved": [0, { "commonjs": false, "amd": false }],
     "import/extensions": ["error", "never"],
     "comma-dangle": ["off", "always"],

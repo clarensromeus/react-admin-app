@@ -2,7 +2,7 @@ import * as React from 'react';
 
 interface userLoginProps {}
 
-const userLogin: React.FunctionComponent<userLoginProps> = (props) => {
+const UserLogin: React.FunctionComponent<userLoginProps> = (props) => {
   return (
     <div>
       <span>let us go</span>
@@ -10,4 +10,4 @@ const userLogin: React.FunctionComponent<userLoginProps> = (props) => {
   );
 };
 
-export default userLogin;
+export default UserLogin;
