@@ -3,16 +3,17 @@ import InputBase from '@mui/material/InputBase';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
-  borderRadius: theme.shape.borderRadius,
-  backgroundColor: alpha(theme.palette.common.white, 0.15),
+  left: '20%',
+  borderRadius: '30px',
+  backgroundColor: alpha(theme.palette.common.white, 0.14),
   '&:hover': {
-    backgroundColor: alpha(theme.palette.common.white, 0.25),
+    backgroundColor: alpha(theme.palette.common.white, 0.23),
   },
   marginLeft: 0,
-  width: '100%',
+  width: '20%',
   [theme.breakpoints.up('sm')]: {
     marginLeft: theme.spacing(1),
-    width: 'auto',
+    width: '20%',
   },
 }));
 
@@ -33,9 +34,10 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
     // vertical padding + font size from searchIcon
     paddingLeft: `calc(1em + ${theme.spacing(4)})`,
     transition: theme.transitions.create('width'),
-    width: '100%',
+    width: '20%',
     [theme.breakpoints.up('sm')]: {
-      width: '12ch',
+      // width: '12ch',
+      width: '100px',
       '&:focus': {
         width: '20ch',
       },

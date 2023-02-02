@@ -20,6 +20,13 @@
     ],
     "no-unused-vars": "warn",
     "react/jsx-fragment": ["off"],
+    "react/jsx-fragments": ["off"],
+    "react/jsx-props-no-spreading": [
+      "off",
+      {
+        "explicitSpread": "ignore"
+      }
+    ],
     "import/no-duplicates": ["off", { "considerQueryString": false }],
     "import/no-unresolved": [0, { "commonjs": false, "amd": false }],
     "import/extensions": ["error", "never"],
