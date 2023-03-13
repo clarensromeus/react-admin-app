@@ -1,29 +1,58 @@
-import * as yup from 'yup';
+import { ObjectSchema, string, object, ref } from 'yup';
 
-const Emailvalidation: string = '';
+type StudentLoginType<T> = {
+  StudentLogin: {
+    email: T;
+    password: T;
+  };
+};
 
-const ValidationSchemaLogin = yup.object().shape({
-  UserLogin: yup.object().shape({
-    email: yup.string().required('email must not be empty').trim(),
-    password: yup
-      .number()
+type StudentRegisterType<T> = {
+  StudentRegisteration: T;
+};
+
+const ValidationSchemaLogin = object().shape({
+  StudentLogin: object().shape({
+    email: string()
+      .required('email must not be empty')
+      .matches(/^\b[\w-.]+@([\w-]+\.)+[\w-]{2,4}\b$/g, 'enter a valid email')
+      .trim(),
+    password: string()
       .required('password must not be empty')
+      .matches(
+        /^.*(?=.{8,})((?=.*[!@#$%^&*()\-_=+{};:,<.>]){1})(?=.*\d)((?=.*[a-z]){1})((?=.*[A-Z]){1}).*$/,
+        'enter a valid and strong password'
+      )
       .min(10, 'password is too short')
-      .max(10, 'password is too long'),
+      .max(16, 'password is too long'),
   }),
 });
 
-const ValidationSchemaRegister = yup.object().shape({
-  StudentRegisteration: yup.object().shape({
-    Firstname: yup.string().required('firstname must not be empty').trim(),
-    Lastname: yup.string().required('lastname must not be empty'),
-    Email: yup.string().required('email must not be empty').trim(),
-    Password: yup
-      .number()
+const ValidationSchemaRegister = object().shape({
+  StudentRegisteration: object().shape({
+    Firstname: string()
+      .required('firstname must not be empty')
+      .min(5, 'Firstname is too short')
+      .trim(),
+    Lastname: string()
+      .required('lastname must not be empty')
+      .min(6, 'Lastname is too short'),
+    Email: string()
+      .required('email must not be empty')
+      .matches(/^\b[\w-.]+@([\w-]+\.)+[\w-]{2,4}\b$/g, 'enter a valid email')
+      .trim(),
+    Password: string()
+      .matches(
+        /^.*(?=.{8,})((?=.*[!@#$%^&*()\-_=+{};:,<.>]){1})(?=.*\d)((?=.*[a-z]){1})((?=.*[A-Z]){1}).*$/,
+        'enter a valid and strong password'
+      )
       .required('password must not be empty')
       .min(10, 'password is too short')
       .max(16, 'password is too long'),
-    PasswordConfirmation: yup.ref('password'),
+    PasswordConfirmation: string()
+      .required('must not be empty')
+      .oneOf([ref('Password'), null], 'password do not match')
+      .trim(),
   }),
 });
 
@@ -31,3 +60,6 @@ export {
   ValidationSchemaLogin as Validate_Login,
   ValidationSchemaRegister as Validate_Register,
 };
+
+// instead of using built-in email object validation of the Api i am
+// using the matches object to validate email with effective RegEx syntax

@@ -1,7 +1,7 @@
 // internal imports of sources
 import * as React from 'react';
 // external imports of sources
-import { Paper, Box, Typography, TextField } from '@mui/material';
+import { Paper, Box, Typography } from '@mui/material';
 import { FC } from 'react';
 import { alpha, styled } from '@mui/material/styles';
 import Container from '@mui/material/Container';
@@ -11,14 +11,13 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import orange from '@mui/material/colors/orange';
+
 import green from '@mui/material/colors/green';
 import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
-import { atom, selector } from 'recoil';
 import Grid from '@mui/material/Grid';
-import { Formik, Field, Form } from 'formik';
 // internal crafted imports of sources
 import UserLogIn from './LogIn/Form';
 import Register from './Register/Form';
@@ -28,7 +27,7 @@ import TabPanel from './Register/TabPanel';
 type CredentialsType = {
   UserLogin: {
     email: string;
-    password: number;
+    password: string;
   };
 };
 
@@ -55,7 +54,7 @@ type ControlPropType = {
 
 const userCredentials: CredentialsType['UserLogin'] = {
   email: 'romeusclarens10@gmail.com',
-  password: 23944948,
+  password: 'clarens(+-1998)',
 };
 
 // user's register informations
@@ -68,14 +67,6 @@ const UserInformations: RegisterUser<RegisterForm<string, number>>['students'] =
     PassInitialisation: 'clarens(+-1998)',
     PassConfirmation: 'clarens(+-1998)',
   };
-
-// create the component style
-const AuthStyle = styled(Container)(({ theme }) => ({
-  display: 'flex',
-  justifyContent: 'center',
-  alignContents: 'center',
-  width: '800px',
-}));
 
 // the width of each tab in Tabs component
 const TAB_WIDTH: string = '50%';
@@ -112,13 +103,18 @@ const Authentication: FC = () => {
 
   return (
     <div>
-      <CssBaseline />
-      <AuthStyle>
-        <Box sx={{}}>
+      <Box
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        alignContent="center"
+        minWidth="100vw"
+      >
+        <Box pt={3}>
           <Paper elevation={3} sx={{ borderRadius: '10%' }}>
             <Box
               sx={{
-                width: '400px',
+                width: '360px',
                 bgcolor: orange[900],
                 borderRadius: '10%',
               }}
@@ -170,7 +166,6 @@ const Authentication: FC = () => {
               <Box
                 sx={{
                   pt: 1,
-                  bgcolor: 'red',
                   display: 'flex',
                   justifyContent: 'flex-start',
                 }}
@@ -237,7 +232,7 @@ const Authentication: FC = () => {
             </Box>
           </Paper>
         </Box>
-      </AuthStyle>
+      </Box>
     </div>
   );
 };

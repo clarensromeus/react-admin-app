@@ -1,13 +1,12 @@
 // internal importts of sources
 import * as React from 'react';
 // external imports of sources
-import { FC } from 'react';
+import { FC, useId } from 'react';
 import { Box, Typography, TextField, Button, Checkbox } from '@mui/material';
 import InputAdornment from '@mui/material/InputAdornment';
-import { ThemeProvider } from '@mui/material/styles';
 import Grid from '@mui/material/Grid';
 import Link from '@mui/material/Link';
-import green from '@mui/material/colors/green';
+
 import FormControlLabel from '@mui/material/FormControlLabel';
 import { useFormik, FormikHelpers } from 'formik';
 // internal crafted imports of sources
@@ -30,7 +29,7 @@ type RegisterProps<T extends Register<string, number>> = {
   };
 };
 
-type RegisterCase = { N: string; S: number };
+type RegisterCase = { N: string; S: string };
 
 type studentInfo<T, S> = {
   StudentRegisteration: {
@@ -58,8 +57,10 @@ const Register: FC<RegisterProps<Register<string, number>>['students']> = ({
     setVisible({ showPassw: !visible.showPassw });
   };
 
+  const ID = useId();
+
   /* eslint implicit-arrow-linebreak: ["off", "beside"] */
-  const wait = (time: number): Promise<Promise<void>> =>
+  const Sleep = (time: number): Promise<Promise<void>> =>
     new Promise((resolve) => setTimeout(resolve, time));
 
   const Formik = useFormik({
@@ -68,8 +69,8 @@ const Register: FC<RegisterProps<Register<string, number>>['students']> = ({
         Firstname: '',
         Lastname: '',
         Email: '',
-        Password: 0,
-        PasswordConfirmation: 0,
+        Password: '',
+        PasswordConfirmation: '',
       },
     },
     validationSchema: Validate_Register,
@@ -79,8 +80,9 @@ const Register: FC<RegisterProps<Register<string, number>>['students']> = ({
         setSubmitting,
       }: FormikHelpers<studentInfo<RegisterCase['S'], RegisterCase['N']>>
     ) => {
-      wait(2000);
+      Sleep(2000);
       console.log(values);
+      setSubmitting(false);
     },
   });
 
@@ -96,7 +98,10 @@ const Register: FC<RegisterProps<Register<string, number>>['students']> = ({
                   type="text"
                   variant="filled"
                   size="small"
+                  id={`${ID}_Firstname`}
                   name="StudentRegisteration.Firstname"
+                  value={Formik.values.StudentRegisteration.Firstname}
+                  onChange={Formik.handleChange}
                   fullWidth
                   placeholder="Firstname..."
                   sx={{
@@ -123,7 +128,10 @@ const Register: FC<RegisterProps<Register<string, number>>['students']> = ({
                   type="text"
                   variant="filled"
                   size="small"
+                  id={`${ID}_Lastname`}
                   name="StudentRegisteration.Lastname"
+                  value={Formik.values.StudentRegisteration.Lastname}
+                  onChange={Formik.handleChange}
                   fullWidth
                   placeholder="Lastname"
                   sx={{
@@ -151,7 +159,10 @@ const Register: FC<RegisterProps<Register<string, number>>['students']> = ({
                 type="text"
                 variant="filled"
                 size="small"
-                name="StudentsRegisteration.Email"
+                id={`${ID}_Email`}
+                name="StudentRegisteration.Email"
+                value={Formik.values.StudentRegisteration.Email}
+                onChange={Formik.handleChange}
                 fullWidth
                 placeholder="enter your email.."
                 sx={{
@@ -179,7 +190,10 @@ const Register: FC<RegisterProps<Register<string, number>>['students']> = ({
               type={visible.showPassw ? 'text' : 'password'}
               variant="filled"
               size="small"
+              id={`${ID}_Password`}
               name="StudentRegisteration.Password"
+              value={Formik.values.StudentRegisteration.Password}
+              onChange={Formik.handleChange}
               fullWidth
               placeholder="enter your password.."
               sx={{
@@ -228,8 +242,11 @@ const Register: FC<RegisterProps<Register<string, number>>['students']> = ({
               type="password"
               variant="filled"
               size="small"
+              id={`${ID}_ConfirmationPassword`}
               name="StudentRegisteration.PasswordConfirmation"
+              value={Formik.values.StudentRegisteration.PasswordConfirmation}
               fullWidth
+              onChange={Formik.handleChange}
               placeholder="confirm your password.."
               sx={{
                 bgcolor: 'white',
@@ -260,6 +277,7 @@ const Register: FC<RegisterProps<Register<string, number>>['students']> = ({
                       color: '#fafafa',
                       '&.Mui-checked': {
                         color: 'green',
+                        accentColor: '#fafafa',
                       },
                     }}
                   />
@@ -296,12 +314,13 @@ const Register: FC<RegisterProps<Register<string, number>>['students']> = ({
             </Box>
           </Grid>
         </Grid>
-        <Box pt={1} sx={{ visibility: 'hidden' }}>
-          ...
-        </Box>
+        <Box sx={{ visibility: 'hidden' }}>...</Box>
       </form>
     </Box>
   );
 };
 
 export default Register;
+
+// using useId hook to create unique identifier for input fields on
+// both the client-side and the server-side

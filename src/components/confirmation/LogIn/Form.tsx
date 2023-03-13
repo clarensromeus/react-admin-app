@@ -9,7 +9,7 @@ import Stack from '@mui/material/Stack';
 import InputAdornment from '@mui/material/InputAdornment';
 import Divider from '@mui/material/Divider';
 import green from '@mui/material/colors/green';
-import { ThemeProvider } from '@mui/material/styles';
+import lightGreen from '@mui/material/colors/lightGreen';
 import LockIcon from '@mui/icons-material/Lock';
 import PersonIcon from '@mui/icons-material/Person';
 import FacebookIcon from '@mui/icons-material/Facebook';
@@ -20,6 +20,7 @@ import IconButton from '@mui/material/IconButton';
 import { alpha } from '@mui/material/styles';
 import { useFormik, FormikHelpers } from 'formik';
 import { atom, selector, useSetRecoilState } from 'recoil';
+
 // internal relatively crafted components of sources
 
 import { Validate_Login } from '../../../utils/validationSchema';
@@ -29,31 +30,37 @@ import { Validate_Login } from '../../../utils/validationSchema';
 // const ID = useId();
 
 type CredentialsType = {
-  UserLogin: { email: string; password: number };
+  StudentLogin: { email: string; password: string };
 };
 
-type UserLoginType = {
-  UserLogin: {
+type StudentLoginType = {
+  StudentLogin: {
     email: string;
-    password: number;
+    password: string;
   };
 };
 
-const UserLogIn: FC<UserLoginType['UserLogin']> = ({ email, password }) => {
+const UserLogIn: FC<StudentLoginType['StudentLogin']> = ({
+  email,
+  password,
+}) => {
   const [visible, setVisible] = React.useState<{ showPassw: boolean }>({
     showPassw: false,
   });
 
   const handleShowPass = (event: React.SyntheticEvent) => {
     setVisible({ showPassw: !visible.showPassw });
+    console.log(event);
   };
+
+  const ID = useId();
 
   /* eslint implicit-arrow-linebreak: ["off", "beside"] */
   const wait = (time: number): Promise<Promise<void>> =>
     new Promise((resolve) => setTimeout(resolve, time));
   // using useFormik helper method to create form with formik and Mui fields.
   const Formik = useFormik({
-    initialValues: { UserLogin: { email: '', password: 1 } },
+    initialValues: { StudentLogin: { email: '', password: '' } },
     validationSchema: Validate_Login,
     onSubmit: async (
       values: CredentialsType,
@@ -62,6 +69,7 @@ const UserLogIn: FC<UserLoginType['UserLogin']> = ({ email, password }) => {
       await wait(1000);
 
       console.log(JSON.stringify(values, null, 2));
+      setSubmitting(false);
     },
   });
 
@@ -76,26 +84,25 @@ const UserLogIn: FC<UserLoginType['UserLogin']> = ({ email, password }) => {
                   type="text"
                   variant="filled"
                   size="small"
-                  id="UserLogin.email"
-                  name="UserLogin.email"
+                  id={`${ID}_email`}
+                  name="StudentLogin.email"
                   fullWidth
-                  value={Formik.values.UserLogin.email}
+                  value={Formik.values.StudentLogin.email}
                   onChange={Formik.handleChange}
                   error={
-                    Formik.touched.UserLogin?.email &&
-                    Boolean(Formik.errors.UserLogin?.email)
+                    Formik.touched.StudentLogin?.email &&
+                    Boolean(Formik.errors.StudentLogin?.email)
                   }
                   helperText={
-                    Formik.touched.UserLogin?.email &&
-                    Formik.errors.UserLogin?.email
+                    Formik.touched.StudentLogin?.email &&
+                    Formik.errors.StudentLogin?.email
                   }
                   sx={{
                     bgcolor: 'white',
                     '& .MuiFilledInput-root': {
-                      bgcolor: 'white',
+                      bgcolor: '#fafafa',
+                      '& .Mui-focused': { bgcolor: '#fafafa' },
                     },
-                    '& .MuiFilledInput-underline': { bgcolor: '#fafafa' },
-                    '& .Mui-focused': { bgcolor: '#fafafa' },
                   }}
                   placeholder="enter your email"
                   InputProps={{
@@ -110,13 +117,13 @@ const UserLogIn: FC<UserLoginType['UserLogin']> = ({ email, password }) => {
             </Grid>
             <Grid item xs={11}>
               <Box>
-                <Box pl={30}>
+                <Box pl={25}>
                   <Typography>
                     <Link
                       href="#f"
                       variant="body2"
                       sx={{
-                        color: 'green',
+                        color: 'rgba(0,130,0,0.8)',
                         fontWeight: 'bold',
                         textDecoration: 'underline',
                       }}
@@ -129,18 +136,18 @@ const UserLogIn: FC<UserLoginType['UserLogin']> = ({ email, password }) => {
                   type={visible.showPassw ? 'text' : 'password'}
                   variant="filled"
                   size="small"
-                  id="UserLogin.password"
-                  name="UserLogin.password"
+                  id={`${ID}_password`}
+                  name="StudentLogin.password"
                   fullWidth
-                  value={Formik.values.UserLogin?.password}
+                  value={Formik.values.StudentLogin?.password}
                   onChange={Formik.handleChange}
                   error={
-                    Formik.touched.UserLogin?.password &&
-                    Boolean(Formik.errors.UserLogin?.password)
+                    Formik.touched.StudentLogin?.password &&
+                    Boolean(Formik.errors.StudentLogin?.password)
                   }
                   helperText={
-                    Formik.touched.UserLogin?.password &&
-                    Formik.errors.UserLogin?.password
+                    Formik.touched.StudentLogin?.password &&
+                    Formik.errors.StudentLogin?.password
                   }
                   sx={{
                     bgcolor: 'white',
@@ -235,3 +242,6 @@ const UserLogIn: FC<UserLoginType['UserLogin']> = ({ email, password }) => {
 };
 
 export default UserLogIn;
+
+// with useId hook i generate unique identifier for the fields input
+// on both the server side and the client  side
